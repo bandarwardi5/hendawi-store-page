@@ -4,6 +4,7 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { ArrowLeft } from "lucide-react";
 
 export interface CategoryProduct {
+  productId?: string;
   image: string;
   title: string;
   subtitle?: string;
