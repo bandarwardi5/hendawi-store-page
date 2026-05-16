@@ -66,7 +66,7 @@ const CATEGORY_LINKS: Record<Product["category"], "/perfumes" | "/watches" | "/f
 };
 
 function ProductDetailPage() {
-  const { product, related } = Route.useLoaderData();
+  const { product, related } = Route.useLoaderData() as { product: Product; related: Product[] };
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const images = product.images && product.images.length > 0 ? product.images : [product.image];
