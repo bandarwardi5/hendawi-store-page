@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Search, User, Heart, ShoppingBag, Menu, X, Globe, LogOut, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/logo-hendawi.png";
 import { useAuth } from "@/lib/auth-context";
+import { useCart } from "@/hooks/use-cart";
 
 const nav = [
   { to: "/" as const, label: "الرئيسية" },
@@ -19,6 +20,16 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
   const { user, profile, logout } = useAuth();
+  const cartItemsCount = useCart((state) => state.getCartItemsCount());
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && search.trim()) {
+      navigate({ to: "/search", search: { q: search.trim() } });
+      setSearch("");
+    }
+  };
   return (
     <header className="sticky top-0 z-50 bg-navy-deep text-ivory border-b border-[color-mix(in_oklab,var(--gold)_25%,transparent)]">
       {/* Top strip */}
@@ -56,6 +67,9 @@ export function Header() {
             <input
               type="text"
               placeholder="ابحث عن منتج، علامة أو فئة..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
               className="w-full bg-white/5 border border-white/10 rounded-full pr-12 pl-4 py-2.5 text-sm text-ivory placeholder:text-ivory/40 focus:outline-none focus:border-gold/60 transition"
             />
             <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold" />
@@ -112,10 +126,14 @@ export function Header() {
             </Link>
           )}
           <button className="hidden md:block p-2 hover:text-gold transition"><Heart className="w-5 h-5" /></button>
-          <button className="relative p-2 hover:text-gold transition">
+          <Link to="/cart" className="relative p-2 hover:text-gold transition">
             <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-gold text-navy-deep text-[10px] font-bold flex items-center justify-center">0</span>
-          </button>
+            {cartItemsCount > 0 && (
+              <span className="absolute -top-1 -left-1 w-5 h-5 rounded-full bg-gold text-navy-deep text-[10px] font-bold flex items-center justify-center">
+                {cartItemsCount}
+              </span>
+            )}
+          </Link>
         </div>
       </div>
 

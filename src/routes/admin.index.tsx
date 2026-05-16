@@ -11,6 +11,7 @@ export const Route = createFileRoute("/admin/")({
 
 function AdminDashboard() {
   const [stats, setStats] = useState({ products: 0, orders: 0, revenue: 0, pending: 0 });
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
 
@@ -20,9 +21,14 @@ function AdminDashboard() {
     setStats({
       products: products.length,
       orders: orders.length,
-      revenue: orders.reduce((sum, o) => sum + (o.total || 0), 0),
+      revenue: orders.filter(o => o.status !== "cancelled").reduce((sum, o) => sum + (o.total || 0), 0),
       pending: orders.filter((o) => o.status === "pending").length,
     });
+    setRecentOrders(orders.sort((a, b) => {
+      const dateA = a.createdAt?.seconds || 0;
+      const dateB = b.createdAt?.seconds || 0;
+      return dateB - dateA;
+    }).slice(0, 5));
     setLoading(false);
   };
 
@@ -87,6 +93,51 @@ function AdminDashboard() {
           <h3 className="font-bold mb-1">إدارة الطلبات</h3>
           <p className="text-sm text-muted-foreground">متابعة وتحديث حالات الطلبات</p>
         </Link>
+      </div>
+
+      <div className="rounded-2xl border bg-card overflow-hidden">
+        <div className="p-6 border-b">
+          <h3 className="font-bold">آخر الطلبات</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-muted/50 text-muted-foreground">
+                <th className="px-6 py-3 text-right font-medium">الطلب</th>
+                <th className="px-6 py-3 text-right font-medium">العميل</th>
+                <th className="px-6 py-3 text-right font-medium">الحالة</th>
+                <th className="px-6 py-3 text-right font-medium">الإجمالي</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {loading ? (
+                <tr><td colSpan={4} className="px-6 py-10 text-center text-muted-foreground">جاري التحميل...</td></tr>
+              ) : recentOrders.length === 0 ? (
+                <tr><td colSpan={4} className="px-6 py-10 text-center text-muted-foreground">لا توجد طلبات بعد</td></tr>
+              ) : (
+                recentOrders.map((o) => (
+                  <tr key={o.id} className="hover:bg-muted/30 transition">
+                    <td className="px-6 py-4 font-mono text-xs">#{o.id.slice(-6).toUpperCase()}</td>
+                    <td className="px-6 py-4">{o.customerDetails?.fullName || o.userEmail || "زائر"}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                        o.status === "pending" ? "bg-amber-100 text-amber-700" :
+                        o.status === "delivered" ? "bg-emerald-100 text-emerald-700" :
+                        o.status === "cancelled" ? "bg-red-100 text-red-700" :
+                        "bg-blue-100 text-blue-700"
+                      }`}>
+                        {o.status === "pending" ? "قيد الانتظار" :
+                         o.status === "delivered" ? "تم التوصيل" :
+                         o.status === "cancelled" ? "ملغي" : "جاري المعالجة"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 font-bold">{formatPrice(o.total)}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

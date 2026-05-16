@@ -12,12 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WatchesRouteImport } from './routes/watches'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PerfumesRouteImport } from './routes/perfumes'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FashionRouteImport } from './routes/fashion'
 import { Route as ElectronicsRouteImport } from './routes/electronics'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CartRouteImport } from './routes/cart'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -39,6 +42,11 @@ const SignupRoute = SignupRouteImport.update({
 const ShippingRoute = ShippingRouteImport.update({
   id: '/shipping',
   path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -69,6 +77,16 @@ const ElectronicsRoute = ElectronicsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BooksRoute = BooksRouteImport.update({
@@ -111,12 +129,15 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/books': typeof BooksRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/shipping': typeof ShippingRoute
   '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
@@ -128,12 +149,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/books': typeof BooksRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/shipping': typeof ShippingRoute
   '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
@@ -147,12 +171,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/books': typeof BooksRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
+  '/search': typeof SearchRoute
   '/shipping': typeof ShippingRoute
   '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
@@ -167,12 +194,15 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/books'
+    | '/cart'
+    | '/checkout'
     | '/contact'
     | '/electronics'
     | '/fashion'
     | '/login'
     | '/perfumes'
     | '/profile'
+    | '/search'
     | '/shipping'
     | '/signup'
     | '/watches'
@@ -184,12 +214,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/books'
+    | '/cart'
+    | '/checkout'
     | '/contact'
     | '/electronics'
     | '/fashion'
     | '/login'
     | '/perfumes'
     | '/profile'
+    | '/search'
     | '/shipping'
     | '/signup'
     | '/watches'
@@ -202,12 +235,15 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/books'
+    | '/cart'
+    | '/checkout'
     | '/contact'
     | '/electronics'
     | '/fashion'
     | '/login'
     | '/perfumes'
     | '/profile'
+    | '/search'
     | '/shipping'
     | '/signup'
     | '/watches'
@@ -221,12 +257,15 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   BooksRoute: typeof BooksRoute
+  CartRoute: typeof CartRoute
+  CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   ElectronicsRoute: typeof ElectronicsRoute
   FashionRoute: typeof FashionRoute
   LoginRoute: typeof LoginRoute
   PerfumesRoute: typeof PerfumesRoute
   ProfileRoute: typeof ProfileRoute
+  SearchRoute: typeof SearchRoute
   ShippingRoute: typeof ShippingRoute
   SignupRoute: typeof SignupRoute
   WatchesRoute: typeof WatchesRoute
@@ -254,6 +293,13 @@ declare module '@tanstack/react-router' {
       path: '/shipping'
       fullPath: '/shipping'
       preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -296,6 +342,20 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/books': {
@@ -368,12 +428,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   BooksRoute: BooksRoute,
+  CartRoute: CartRoute,
+  CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   ElectronicsRoute: ElectronicsRoute,
   FashionRoute: FashionRoute,
   LoginRoute: LoginRoute,
   PerfumesRoute: PerfumesRoute,
   ProfileRoute: ProfileRoute,
+  SearchRoute: SearchRoute,
   ShippingRoute: ShippingRoute,
   SignupRoute: SignupRoute,
   WatchesRoute: WatchesRoute,
@@ -382,3 +445,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
