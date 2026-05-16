@@ -134,11 +134,11 @@ function Home() {
         <div className="container mx-auto px-6">
           <SectionTitle eyebrow="الأكثر مبيعاً" title="باقات هدايا مميزة" subtitle="منتجات منتقاة بعناية لمحبي الفخامة." />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-            <ProductCard image={pPerfume} title="عود سوبريم 2077" subtitle="عطر • 100 مل" price="499 ر.س" oldPrice="599 ر.س" rating={5} reviews={128} badge={{ label: "الأكثر طلباً", tone: "gold" }} />
-            <ProductCard image={pWatch} title="ساعة كلاسيك ذهبية" subtitle="ساعة رجالية" price="1,899 ر.س" rating={4.5} reviews={96} badge={{ label: "جديد", tone: "emerald" }} />
-            <ProductCard image={pGift} title="باكج الإيمان" subtitle="مصحف • مسبحة • عطر" price="299 ر.س" rating={5} reviews={75} badge={{ label: "الأفضل مبيعاً", tone: "gold" }} />
-            <ProductCard image={pBag} title="حقيبة جلد فاخرة" subtitle="جلد طبيعي 100%" price="649 ر.س" rating={4} reviews={53} />
-            <ProductCard image={pElec} title="شاحن لاسلكي + باور بانك" subtitle="20000 mAh" price="349 ر.س" oldPrice="429 ر.س" rating={4.5} reviews={41} badge={{ label: "خصم 20%", tone: "red" }} />
+            <ProductCard productId="perf-001" image={pPerfume} title="عود سوبريم 2077" subtitle="عطر • 100 مل" price="499 ر.س" oldPrice="599 ر.س" rating={5} reviews={128} badge={{ label: "الأكثر طلباً", tone: "gold" }} />
+            <ProductCard productId="wat-001" image={pWatch} title="ساعة كلاسيك ذهبية" subtitle="ساعة رجالية" price="1,899 ر.س" rating={4.5} reviews={96} badge={{ label: "جديد", tone: "emerald" }} />
+            <ProductCard productId="gift-001" image={pGift} title="باكج الإيمان" subtitle="مصحف • مسبحة • عطر" price="299 ر.س" rating={5} reviews={75} badge={{ label: "الأفضل مبيعاً", tone: "gold" }} />
+            <ProductCard productId="fas-001" image={pBag} title="حقيبة جلد فاخرة" subtitle="جلد طبيعي 100%" price="649 ر.س" rating={4} reviews={53} />
+            <ProductCard productId="elec-001" image={pElec} title="شاحن لاسلكي + باور بانك" subtitle="20000 mAh" price="349 ر.س" oldPrice="429 ر.س" rating={4.5} reviews={41} badge={{ label: "خصم 20%", tone: "red" }} />
           </div>
         </div>
       </section>

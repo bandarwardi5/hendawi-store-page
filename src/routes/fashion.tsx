@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryPage } from "@/components/site/CategoryPage";
 import heroFashion from "@/assets/hero-fashion.jpg";
-import pBag from "@/assets/product-bag-1.jpg";
+import { SEED_PRODUCTS, formatPrice } from "@/lib/products";
 
 export const Route = createFileRoute("/fashion")({
   component: Fashion,
@@ -13,17 +13,18 @@ export const Route = createFileRoute("/fashion")({
   }),
 });
 
-const products = Array.from({ length: 8 }).map((_, i) => ({
-  image: pBag,
-  title: ["حقيبة جلد كلاسيك", "محفظة جلد إيطالي", "حزام رجالي فاخر", "نظارة شمسية بنية", "حقيبة كروس بودي", "محفظة نسائية", "حزام نسائي ذهبي", "نظارة طيار ذهبية"][i],
-  subtitle: "جلد طبيعي 100%",
-  price: `${[649, 249, 199, 379, 549, 229, 189, 329][i]} ر.س`,
-  rating: 4 + (i % 2) * 0.5,
-  reviews: 20 + i * 8,
-  badge: i === 1 ? { label: "جديد", tone: "emerald" as const } : undefined,
-}));
-
 function Fashion() {
+  const products = SEED_PRODUCTS.filter((p) => p.category === "fashion").map((p) => ({
+    productId: p.id,
+    image: p.image,
+    title: p.title,
+    subtitle: p.subtitle,
+    price: formatPrice(p.price),
+    oldPrice: p.oldPrice ? formatPrice(p.oldPrice) : undefined,
+    rating: p.rating,
+    reviews: p.reviews,
+    badge: p.badge,
+  }));
   return (
     <CategoryPage
       heroProps={{
