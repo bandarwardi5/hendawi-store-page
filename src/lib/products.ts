@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where, setDoc, serverTimestamp, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import pPerfume from "@/assets/product-perfume-1.jpg";
 import pWatch from "@/assets/product-watch-1.jpg";
@@ -120,4 +120,51 @@ export async function seedProducts(): Promise<number> {
     count++;
   }
   return count;
+}
+
+export async function createProduct(p: Product): Promise<void> {
+  const { id, ...rest } = p;
+  await setDoc(doc(db, PRODUCTS_COL, id), { ...rest, createdAt: serverTimestamp() });
+}
+
+export async function updateProduct(id: string, data: Partial<Omit<Product, "id">>): Promise<void> {
+  await updateDoc(doc(db, PRODUCTS_COL, id), { ...data, updatedAt: serverTimestamp() });
+}
+
+export async function deleteProduct(id: string): Promise<void> {
+  await deleteDoc(doc(db, PRODUCTS_COL, id));
+}
+
+// Orders
+export interface OrderItem {
+  productId: string;
+  title: string;
+  price: number;
+  quantity: number;
+  image?: string;
+}
+export interface Order {
+  id: string;
+  userId: string;
+  userEmail?: string | null;
+  items: OrderItem[];
+  total: number;
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  shippingAddress?: { name?: string; phone?: string; address?: string; city?: string; country?: string };
+  createdAt?: { seconds: number; nanoseconds: number } | null;
+}
+
+const ORDERS_COL = "orders";
+
+export async function fetchAllOrders(): Promise<Order[]> {
+  try {
+    const snap = await getDocs(collection(db, ORDERS_COL));
+    return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Order, "id">) }));
+  } catch {
+    return [];
+  }
+}
+
+export async function updateOrderStatus(id: string, status: Order["status"]): Promise<void> {
+  await updateDoc(doc(db, ORDERS_COL, id), { status, updatedAt: serverTimestamp() });
 }
