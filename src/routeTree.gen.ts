@@ -10,8 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WatchesRouteImport } from './routes/watches'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PerfumesRouteImport } from './routes/perfumes'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as FashionRouteImport } from './routes/fashion'
 import { Route as ElectronicsRouteImport } from './routes/electronics'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -23,14 +26,29 @@ const WatchesRoute = WatchesRouteImport.update({
   path: '/watches',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShippingRoute = ShippingRouteImport.update({
   id: '/shipping',
   path: '/shipping',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PerfumesRoute = PerfumesRouteImport.update({
   id: '/perfumes',
   path: '/perfumes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FashionRoute = FashionRouteImport.update({
@@ -65,8 +83,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
+  '/profile': typeof ProfileRoute
   '/shipping': typeof ShippingRoute
+  '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
 }
 export interface FileRoutesByTo {
@@ -75,8 +96,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
+  '/profile': typeof ProfileRoute
   '/shipping': typeof ShippingRoute
+  '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
 }
 export interface FileRoutesById {
@@ -86,8 +110,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
+  '/profile': typeof ProfileRoute
   '/shipping': typeof ShippingRoute
+  '/signup': typeof SignupRoute
   '/watches': typeof WatchesRoute
 }
 export interface FileRouteTypes {
@@ -98,8 +125,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/login'
     | '/perfumes'
+    | '/profile'
     | '/shipping'
+    | '/signup'
     | '/watches'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,8 +138,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/login'
     | '/perfumes'
+    | '/profile'
     | '/shipping'
+    | '/signup'
     | '/watches'
   id:
     | '__root__'
@@ -118,8 +151,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/login'
     | '/perfumes'
+    | '/profile'
     | '/shipping'
+    | '/signup'
     | '/watches'
   fileRoutesById: FileRoutesById
 }
@@ -129,8 +165,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ElectronicsRoute: typeof ElectronicsRoute
   FashionRoute: typeof FashionRoute
+  LoginRoute: typeof LoginRoute
   PerfumesRoute: typeof PerfumesRoute
+  ProfileRoute: typeof ProfileRoute
   ShippingRoute: typeof ShippingRoute
+  SignupRoute: typeof SignupRoute
   WatchesRoute: typeof WatchesRoute
 }
 
@@ -143,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WatchesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shipping': {
       id: '/shipping'
       path: '/shipping'
@@ -150,11 +196,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShippingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/perfumes': {
       id: '/perfumes'
       path: '/perfumes'
       fullPath: '/perfumes'
       preLoaderRoute: typeof PerfumesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fashion': {
@@ -201,20 +261,13 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ElectronicsRoute: ElectronicsRoute,
   FashionRoute: FashionRoute,
+  LoginRoute: LoginRoute,
   PerfumesRoute: PerfumesRoute,
+  ProfileRoute: ProfileRoute,
   ShippingRoute: ShippingRoute,
+  SignupRoute: SignupRoute,
   WatchesRoute: WatchesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
