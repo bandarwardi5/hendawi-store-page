@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryPage } from "@/components/site/CategoryPage";
 import heroElectronics from "@/assets/hero-electronics.jpg";
-import pElec from "@/assets/product-electronics-1.jpg";
+import { SEED_PRODUCTS, formatPrice } from "@/lib/products";
 
 export const Route = createFileRoute("/electronics")({
   component: Electronics,
@@ -13,18 +13,18 @@ export const Route = createFileRoute("/electronics")({
   }),
 });
 
-const products = Array.from({ length: 8 }).map((_, i) => ({
-  image: pElec,
-  title: ["باور بانك 20000mAh", "شاحن لاسلكي ماجنت", "يد تحكم PS5", "سماعات بلوتوث برو", "كيبل تايب-سي سريع", "ستاند ألعاب RGB", "ماوس ألعاب احترافي", "كيبورد ميكانيكي"][i],
-  subtitle: "ضمان دولي • أصلي",
-  price: `${[349, 199, 449, 299, 89, 249, 329, 549][i]} ر.س`,
-  oldPrice: i % 2 === 0 ? `${[429, 269, 539, 379][i % 4]} ر.س` : undefined,
-  rating: 4 + (i % 2) * 0.5,
-  reviews: 25 + i * 9,
-  badge: i === 0 ? { label: "خصم 20%", tone: "red" as const } : i === 2 ? { label: "PS5", tone: "gold" as const } : undefined,
-}));
-
 function Electronics() {
+  const products = SEED_PRODUCTS.filter((p) => p.category === "electronics").map((p) => ({
+    productId: p.id,
+    image: p.image,
+    title: p.title,
+    subtitle: p.subtitle,
+    price: formatPrice(p.price),
+    oldPrice: p.oldPrice ? formatPrice(p.oldPrice) : undefined,
+    rating: p.rating,
+    reviews: p.reviews,
+    badge: p.badge,
+  }));
   return (
     <CategoryPage
       heroProps={{

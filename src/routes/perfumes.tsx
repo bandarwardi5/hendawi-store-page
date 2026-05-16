@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryPage } from "@/components/site/CategoryPage";
 import heroPerfume from "@/assets/hero-perfume.jpg";
-import pPerfume from "@/assets/product-perfume-1.jpg";
+import { SEED_PRODUCTS, formatPrice } from "@/lib/products";
 
 export const Route = createFileRoute("/perfumes")({
   component: Perfumes,
@@ -13,18 +13,19 @@ export const Route = createFileRoute("/perfumes")({
   }),
 });
 
-const products = Array.from({ length: 8 }).map((_, i) => ({
-  image: pPerfume,
-  title: ["عود سوبريم 2077", "مسك الإمارات", "عطر الفرسان", "بخور لطافة", "عطر دار الحرمين", "أفنان الذهبي", "عطر القمة", "ريف الفخامة"][i],
-  subtitle: "عطر فاخر • 100 مل",
-  price: `${[499, 389, 549, 199, 459, 329, 599, 279][i]} ر.س`,
-  oldPrice: i % 3 === 0 ? `${[599, 489, 649][i % 3]} ر.س` : undefined,
-  rating: 4 + (i % 2) * 0.5,
-  reviews: 30 + i * 12,
-  badge: i === 0 ? { label: "الأكثر طلباً", tone: "gold" as const } : i === 2 ? { label: "جديد", tone: "emerald" as const } : undefined,
-}));
-
 function Perfumes() {
+  const products = SEED_PRODUCTS.filter((p) => p.category === "perfumes").map((p) => ({
+    productId: p.id,
+    image: p.image,
+    title: p.title,
+    subtitle: p.subtitle,
+    price: formatPrice(p.price),
+    oldPrice: p.oldPrice ? formatPrice(p.oldPrice) : undefined,
+    rating: p.rating,
+    reviews: p.reviews,
+    badge: p.badge,
+  }));
+
   return (
     <CategoryPage
       heroProps={{

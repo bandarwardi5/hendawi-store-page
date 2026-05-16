@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CategoryPage } from "@/components/site/CategoryPage";
 import heroBooks from "@/assets/hero-books.jpg";
+import { SEED_PRODUCTS, formatPrice } from "@/lib/products";
 
 export const Route = createFileRoute("/books")({
   component: Books,
@@ -12,28 +13,18 @@ export const Route = createFileRoute("/books")({
   }),
 });
 
-const titles = [
-  "التحليل المالي للقوائم المالية",
-  "المحاسبة المالية المتقدمة طبقاً للمعايير الدولية IFRS",
-  "المراجعة والرقابة الداخلية",
-  "المحاسبة الإدارية: التخطيط والرقابة واتخاذ القرار",
-  "الضرائب والزكاة في المملكة العربية السعودية",
-  "محاسبة التكاليف المتقدمة",
-  "إدارة المخاطر المالية",
-  "أساسيات التدقيق الداخلي",
-];
-
-const products = titles.map((t, i) => ({
-  image: heroBooks,
-  title: t,
-  subtitle: "PDF + ورقي",
-  price: `${[49, 69, 59, 49, 39, 55, 75, 45][i]} ر.س`,
-  rating: 4.5 + (i % 2) * 0.5,
-  reviews: 25 + i * 7,
-  badge: i === 1 ? { label: "الأكثر مبيعاً", tone: "gold" as const } : i === 4 ? { label: "جديد", tone: "emerald" as const } : undefined,
-}));
-
 function Books() {
+  const products = SEED_PRODUCTS.filter((p) => p.category === "books").map((p) => ({
+    productId: p.id,
+    image: p.image,
+    title: p.title,
+    subtitle: p.subtitle,
+    price: formatPrice(p.price),
+    oldPrice: p.oldPrice ? formatPrice(p.oldPrice) : undefined,
+    rating: p.rating,
+    reviews: p.reviews,
+    badge: p.badge,
+  }));
   return (
     <CategoryPage
       heroProps={{
