@@ -1,6 +1,8 @@
 import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function ProductCard({
+  productId,
   image,
   title,
   subtitle,
@@ -10,6 +12,7 @@ export function ProductCard({
   reviews = 0,
   badge,
 }: {
+  productId?: string;
   image: string;
   title: string;
   subtitle?: string;
@@ -27,15 +30,26 @@ export function ProductCard({
       ? "bg-red-600 text-white"
       : "bg-gold text-navy-deep";
 
+  const ImageWrap = ({ children }: { children: React.ReactNode }) =>
+    productId ? (
+      <Link to="/products/$productId" params={{ productId }} className="block">
+        {children}
+      </Link>
+    ) : (
+      <>{children}</>
+    );
+
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-border hover-lift">
       <div className="relative aspect-square bg-beige overflow-hidden">
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        />
+        <ImageWrap>
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+        </ImageWrap>
         {badge && (
           <span className={`absolute top-3 right-3 ${toneCls} text-[11px] font-bold px-3 py-1 rounded-full`}>
             {badge.label}
@@ -47,7 +61,13 @@ export function ProductCard({
       </div>
 
       <div className="p-4">
-        <h3 className="font-bold text-navy-deep text-sm mb-1 line-clamp-1">{title}</h3>
+        {productId ? (
+          <Link to="/products/$productId" params={{ productId }}>
+            <h3 className="font-bold text-navy-deep text-sm mb-1 line-clamp-1 hover:text-gold transition">{title}</h3>
+          </Link>
+        ) : (
+          <h3 className="font-bold text-navy-deep text-sm mb-1 line-clamp-1">{title}</h3>
+        )}
         {subtitle && <p className="text-xs text-muted-foreground mb-2 line-clamp-1">{subtitle}</p>}
         <div className="flex items-center gap-1 mb-2">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -61,9 +81,19 @@ export function ProductCard({
             {oldPrice && <span className="text-xs text-muted-foreground line-through">{oldPrice}</span>}
           </div>
         </div>
-        <button className="w-full bg-navy-deep text-ivory hover:bg-gold hover:text-navy-deep transition py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
-          <ShoppingBag className="w-4 h-4" /> أضف إلى السلة
-        </button>
+        {productId ? (
+          <Link
+            to="/products/$productId"
+            params={{ productId }}
+            className="w-full bg-navy-deep text-ivory hover:bg-gold hover:text-navy-deep transition py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2"
+          >
+            <ShoppingBag className="w-4 h-4" /> عرض المنتج
+          </Link>
+        ) : (
+          <button className="w-full bg-navy-deep text-ivory hover:bg-gold hover:text-navy-deep transition py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2">
+            <ShoppingBag className="w-4 h-4" /> أضف إلى السلة
+          </button>
+        )}
       </div>
     </div>
   );
