@@ -16,6 +16,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PerfumesRouteImport } from './routes/perfumes'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GiftsRouteImport } from './routes/gifts'
 import { Route as FashionRouteImport } from './routes/fashion'
 import { Route as ElectronicsRouteImport } from './routes/electronics'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -62,6 +63,11 @@ const PerfumesRoute = PerfumesRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftsRoute = GiftsRouteImport.update({
+  id: '/gifts',
+  path: '/gifts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FashionRoute = FashionRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/gifts': typeof GiftsRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/gifts': typeof GiftsRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/electronics': typeof ElectronicsRoute
   '/fashion': typeof FashionRoute
+  '/gifts': typeof GiftsRoute
   '/login': typeof LoginRoute
   '/perfumes': typeof PerfumesRoute
   '/profile': typeof ProfileRoute
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/gifts'
     | '/login'
     | '/perfumes'
     | '/profile'
@@ -219,6 +229,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/gifts'
     | '/login'
     | '/perfumes'
     | '/profile'
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/electronics'
     | '/fashion'
+    | '/gifts'
     | '/login'
     | '/perfumes'
     | '/profile'
@@ -262,6 +274,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ElectronicsRoute: typeof ElectronicsRoute
   FashionRoute: typeof FashionRoute
+  GiftsRoute: typeof GiftsRoute
   LoginRoute: typeof LoginRoute
   PerfumesRoute: typeof PerfumesRoute
   ProfileRoute: typeof ProfileRoute
@@ -321,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gifts': {
+      id: '/gifts'
+      path: '/gifts'
+      fullPath: '/gifts'
+      preLoaderRoute: typeof GiftsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fashion': {
@@ -433,6 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ElectronicsRoute: ElectronicsRoute,
   FashionRoute: FashionRoute,
+  GiftsRoute: GiftsRoute,
   LoginRoute: LoginRoute,
   PerfumesRoute: PerfumesRoute,
   ProfileRoute: ProfileRoute,
