@@ -4,11 +4,8 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 
-import appCss from "../styles.css?url";
 import { AuthProvider } from "@/lib/auth-context";
 
 function NotFoundComponent() {
@@ -69,46 +66,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  ssr: false,
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hendawi Group — وجهتك الفاخرة للعطور والساعات والهدايا" },
-      { name: "description", content: "مجموعة هنداوي: عطور خليجية أصلية، ساعات فاخرة، هدايا مميزة، إلكترونيات وخدمات شحن دولي من إسطنبول إلى العالم." },
-      { name: "author", content: "Hendawi Group" },
-      { property: "og:title", content: "Hendawi Group — الفخامة بين يديك" },
-      { property: "og:description", content: "متجر فاخر متعدد الأقسام: عطور، ساعات، هدايا، إلكترونيات وشحن دولي." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ar" dir="rtl">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
@@ -121,3 +82,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+

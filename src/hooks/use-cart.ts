@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface CartItem {
   id: string;
@@ -60,6 +60,7 @@ export const useCart = create<CartStore>()(
     }),
     {
       name: "hendawi-cart-storage",
+      storage: createJSONStorage(() => (typeof window !== "undefined" ? window.localStorage : ({} as Storage))),
     }
   )
 );
