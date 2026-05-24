@@ -8,8 +8,9 @@ import { useCart } from "@/hooks/use-cart";
 const nav = [
   { to: "/" as const, label: "الرئيسية" },
   { to: "/perfumes" as const, label: "العطور الخليجية" },
+  { to: "/watches" as const, label: "الساعات" },
+  { to: "/gifts" as const, label: "الهدايا" },
   { to: "/fashion" as const, label: "الأزياء" },
-  { to: "/watches" as const, label: "الساعات والهدايا" },
   { to: "/electronics" as const, label: "الإلكترونيات" },
   { to: "/books" as const, label: "الكتب المحاسبية" },
   { to: "/shipping" as const, label: "الشحن الدولي" },
